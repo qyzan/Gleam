@@ -170,7 +170,8 @@ def quest(auth_token,slug):
                     print(f'{putih}-'*80)
 
                 elif message == "Insufficient energy." :
-                    print(f'{merah}Energi Habis Bro..')
+                    print(f'{merah}Energi Habis Bro...')
+                    print(f'{hijau}Bikin Copy Dulu ga sih?...')
                     status = CheckEnergy(auth_token, headers)
                     if status == 200:
                         continue
