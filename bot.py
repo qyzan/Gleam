@@ -119,6 +119,7 @@ def CheckEnergy(auth_token, headers):
         print(f"{hijau}Success to Start Energy : {putih}{claim.status_code}")
     else:
         print(f'{merah}Energi Sedang Proses Refill {claim.status_code}')
+    return claim.status_code
 
 def checkProject(auth_token, headers):
     headers["Authorization"] = f"Bearer {auth_token}"
@@ -155,21 +156,25 @@ def quest(auth_token,slug):
                 response = requests.post(url=url_start, headers=headers, json=new_payload)
                 data = response.json()
                 message = data.get('message')
-                title = data['quest']['title']
                 if response.status_code == 200:
                     start = requests.post(url=url_check, headers=headers, json=new_payload)
                     if start.status_code == 200:
+                        title = data['quest']['title']
                         print(f'{hijau}Success to Start Quest : {putih}{title} - {start.status_code}')
                     claim = requests.post(url=url_claim, headers=headers, json=new_payload)
                     if claim.status_code == 200:
+                        title = data['quest']['title']
                         print(f'{hijau}Success to Claim Quest : {putih}{title} - {claim.status_code}')
                     print(f'{putih}-'*80)
 
                 elif message == "Insufficient energy." :
                     print(f'{merah}Energi Habis Bro..')
-                    CheckEnergy(auth_token, headers)
-                    countdown(10800)
-                    break
+                    status = CheckEnergy(auth_token, headers)
+                    if status == 200:
+                        continue
+                    else:
+                        countdown(10800)
+                        break
                 elif message == 'This quest has already been processed or completed.':
                     print(f'{biru}This quest has already been processed or completed.')
                     print(f'{hijau}Next Request....')
