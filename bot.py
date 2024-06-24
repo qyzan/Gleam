@@ -74,6 +74,7 @@ def login():
     data = response.json()
     username = data['account']['username']
     id = data['account']['id']
+    referal = data['account']['referralCode']
     for balance in data['balances']:
         if balance['currency'] == 'GLEAM':
             amount_gleam = float(balance['amount'])  # Ubah ke float jika diperlukan
@@ -83,6 +84,7 @@ def login():
     print(f"{hijau}Id User : {putih}{id}")
     print(f"{hijau}Login as : {putih}{username}")
     print(f"{hijau}Balance GLEAM : {putih}{amount_gleam}")
+    print(f'{hijau}Referal Code : {putih}{referal}')
 
     if response.status_code == 200:
         return response.json().get('token'), headers  # Adjust based on actual response structure
